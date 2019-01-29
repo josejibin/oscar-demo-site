@@ -147,4 +147,6 @@ REST_FRAMEWORK = {
     )
 }
 
+STATIC_ROOT = "/home/jibinjose/oscar-demo-site/static"
+
 from oscar.defaults import *  # noqa

@@ -17,7 +17,7 @@ SECRET_KEY = '$myj1#btoao6eu8!&oegun(a!$m+#48dr)h*x&&z3)$k6)7ts9'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['http://jibinjose.pythonanywhere.com/']
+ALLOWED_HOSTS = ['jibinjose.pythonanywhere.com']
 
 
 # Application definition

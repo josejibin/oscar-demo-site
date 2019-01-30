@@ -10,7 +10,10 @@ class MyRESTApiApplication(RESTApiApplication):
     def get_urls(self):
         urls = [url(
             r'^products/$',
-            views.ProductList.as_view(), name='product-list')]
+            views.ProductList.as_view(), name='product-list'),
+            url(
+            r'^categories/$',
+            views.CategoryList.as_view(), name='categories')]
 
         return urls + super(MyRESTApiApplication, self).get_urls()
 

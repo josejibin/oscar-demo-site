@@ -39,13 +39,27 @@ class MyProductLinkSerializer(product.ProductLinkSerializer):
         return "jibinjose"
 
 
-class MyCategorySerializer(OscarModelSerializer):
+class SubCategorySerializer(OscarModelSerializer):
     images = serializers.SerializerMethodField('get_alternate_name')
     country_code = serializers.CharField(source='id')
 
     class Meta():
         model = Category
         fields = ('id', 'name', 'images', 'country_code')
+
+    def get_alternate_name(self, obj):
+        return "jibinjose"
+
+
+class MyCategorySerializer(OscarModelSerializer):
+    images = serializers.SerializerMethodField('get_alternate_name')
+    country_code = serializers.CharField(source='id')
+
+    get_children = SubCategorySerializer(many=True)
+
+    class Meta():
+        model = Category
+        fields = ('id', 'name', 'images', 'country_code', 'get_children')
 
     def get_alternate_name(self, obj):
         return "jibinjose"

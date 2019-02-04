@@ -39,25 +39,29 @@ class MyProductLinkSerializer(product.ProductLinkSerializer):
 
 
 class SubCategorySerializer(OscarModelSerializer):
-    images = serializers.SerializerMethodField('get_alternate_name')
+    img_url = serializers.SerializerMethodField()
 
     class Meta():
         model = Category
-        fields = ('id', 'name', 'images', 'country_code')
+        fields = ('id', 'name', 'img_url')
 
-    def get_alternate_name(self, obj):
-        return "jibinjose"
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
 
 
 class MyCategorySerializer(OscarModelSerializer):
-    images = serializers.SerializerMethodField('get_alternate_name')
+    img_url = serializers.SerializerMethodField()
 
     sub_categories = SubCategorySerializer(many=True, source='get_children')
 
     class Meta():
         model = Category
-        fields = ('id', 'name', 'images', 'country_code', 'sub_categories')
+        fields = ('id', 'name', 'img_url', 'sub_categories')
 
-    def get_alternate_name(self, obj):
-        return "jibinjose"
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
 

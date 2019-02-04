@@ -19,7 +19,6 @@ Selector = get_class('partner.strategy', 'Selector')
 class MyProductLinkSerializer(product.ProductLinkSerializer):
     images = serializers.SerializerMethodField('get_alternate_name')
     price = serializers.SerializerMethodField()
-    country_code = serializers.CharField(source='id')
 
     class Meta(product.ProductLinkSerializer.Meta):
         fields = ('url', 'id', 'title', 'images', 'price', 'country_code')
@@ -41,7 +40,6 @@ class MyProductLinkSerializer(product.ProductLinkSerializer):
 
 class SubCategorySerializer(OscarModelSerializer):
     images = serializers.SerializerMethodField('get_alternate_name')
-    country_code = serializers.CharField(source='id')
 
     class Meta():
         model = Category
@@ -53,7 +51,6 @@ class SubCategorySerializer(OscarModelSerializer):
 
 class MyCategorySerializer(OscarModelSerializer):
     images = serializers.SerializerMethodField('get_alternate_name')
-    country_code = serializers.CharField(source='id')
 
     sub_categories = SubCategorySerializer(many=True, source='get_children')
 

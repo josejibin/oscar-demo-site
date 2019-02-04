@@ -18,16 +18,12 @@ Category = get_model('catalogue', 'category')
 
 
 class CategoryList(generics.ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter()
     serializer_class = MyCategorySerializer
 
     def get_queryset(self):
         """
-        Allow filtering on structure so standalone and parent products can
-        be selected separately, eg::
-            http://127.0.0.1:8000/api/products/?structure=standalone
-        or::
-            http://127.0.0.1:8000/api/products/?structure=parent
         """
         qs = super(CategoryList, self).get_queryset()
+        qs = qs.filter(depth__in=[0, 1])
         return qs

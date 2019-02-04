@@ -55,11 +55,12 @@ class MyCategorySerializer(OscarModelSerializer):
     images = serializers.SerializerMethodField('get_alternate_name')
     country_code = serializers.CharField(source='id')
 
-    get_children = SubCategorySerializer(many=True)
+    sub_categories = SubCategorySerializer(many=True, source='get_children')
 
     class Meta():
         model = Category
-        fields = ('id', 'name', 'images', 'country_code', 'get_children')
+        fields = ('id', 'name', 'images', 'country_code', 'sub_categories')
 
     def get_alternate_name(self, obj):
         return "jibinjose"
+

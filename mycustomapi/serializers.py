@@ -47,7 +47,7 @@ class SubCategorySerializer(OscarModelSerializer):
 
     class Meta():
         model = Category
-        fields = ('id', 'name', 'img_url')
+        fields = ('id', 'name', 'img_url', 'url')
 
     def get_img_url(self, obj):
         if not obj.image:

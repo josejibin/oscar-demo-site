@@ -13,7 +13,10 @@ class MyRESTApiApplication(RESTApiApplication):
             views.ProductList.as_view(), name='product-list'),
             url(
             r'^categories/$',
-            views.CategoryList.as_view(), name='categories')]
+            views.CategoryList.as_view(), name='categories'),
+            url(r'^categories/(?P<pk>[0-9]+)/$',
+            views.CategoryDetail.as_view(), name='category-detail')
+        ]
 
         return urls + super(MyRESTApiApplication, self).get_urls()
 

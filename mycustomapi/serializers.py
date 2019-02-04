@@ -12,16 +12,18 @@ from oscarapi.utils import (
 
 Category = get_model('catalogue', 'category')
 
+Product = get_model('catalogue', 'Product')
 
 Selector = get_class('partner.strategy', 'Selector')
 
 
 class MyProductLinkSerializer(product.ProductLinkSerializer):
-    images = serializers.SerializerMethodField('get_alternate_name')
+    img_url = serializers.SerializerMethodField()
+
     price = serializers.SerializerMethodField()
 
     class Meta(product.ProductLinkSerializer.Meta):
-        fields = ('url', 'id', 'title', 'images', 'price', 'country_code')
+        fields = ('url', 'id', 'title', 'images', 'price')
 
     def get_price(self, obj):
         request = self.context.get("request")
@@ -34,8 +36,10 @@ class MyProductLinkSerializer(product.ProductLinkSerializer):
 
         return ser.data
 
-    def get_alternate_name(self, obj):
-        return "jibinjose"
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
 
 
 class SubCategorySerializer(OscarModelSerializer):
@@ -54,7 +58,9 @@ class SubCategorySerializer(OscarModelSerializer):
 class MyCategorySerializer(OscarModelSerializer):
     img_url = serializers.SerializerMethodField()
 
-    sub_categories = SubCategorySerializer(many=True, source='get_children')
+    sub_categories = SubCategorySerializer(
+        many=True, source='get_children'
+    )
 
     class Meta():
         model = Category
@@ -65,3 +71,53 @@ class MyCategorySerializer(OscarModelSerializer):
             return ""
         return obj.images
 
+
+class SubCategoryWithProductSerializer(OscarModelSerializer):
+    img_url = serializers.SerializerMethodField()
+
+    products = MyProductLinkSerializer(
+        many=True, source='product_set'
+    )
+
+    class Meta():
+        model = Category
+        fields = ('id', 'name', 'img_url', 'products')
+
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
+
+
+
+class ParentProductSerializer(product.ProductLinkSerializer):
+
+    products = MyProductLinkSerializer(
+        many=True, source='children'
+    )
+
+
+    class Meta(product.ProductLinkSerializer.Meta):
+        fields = ('url', 'id', 'title', 'images', 'products')
+
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
+
+
+class SubCategorySerializer1(OscarModelSerializer):
+    img_url = serializers.SerializerMethodField()
+
+    sub_categories = ParentProductSerializer(
+        many=True, source='product_set'
+    )
+
+    class Meta():
+        model = Category
+        fields = ('id', 'name', 'img_url', 'sub_categories')
+
+    def get_img_url(self, obj):
+        if not obj.image:
+            return ""
+        return obj.images
